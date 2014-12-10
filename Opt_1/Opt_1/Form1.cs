@@ -142,7 +142,7 @@ namespace Opt_1
                 Blad();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btn_wyzarzanie2_Click(object sender, EventArgs e)
         {
             if (komi.ileMiast != 0)
             {
@@ -155,6 +155,7 @@ namespace Opt_1
                 {
                     komi.trasaDlaDwoch[i + 1] = komi.trasa[i];
                 }
+                komi.trasaDlaDwoch.CopyTo(komi.trasaDlaDwochNajkrotsza,0);
 
                 form5.textBox_podstawowa.Text = komi.wyswietlTrase(komi.trasaDlaDwoch);
                 komi.trasaDlaDwoch.CopyTo(komi.trasaDlaDwochBiezaca, 0);

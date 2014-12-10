@@ -37,7 +37,7 @@
             this.btn_wyswietl = new System.Windows.Forms.Button();
             this.btn_iteracyjna = new System.Windows.Forms.Button();
             this.btn_wyrzarzanie = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.bte_wyzarzanie2 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -124,22 +124,22 @@
             this.btn_wyrzarzanie.UseVisualStyleBackColor = true;
             this.btn_wyrzarzanie.Click += new System.EventHandler(this.btn_wyrzarzanie_Click);
             // 
-            // button1
+            // bte_wyzarzanie2
             // 
-            this.button1.Location = new System.Drawing.Point(173, 111);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 52);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "Symulowane\r\nWyżarzanie\r\ndla 2";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.bte_wyzarzanie2.Location = new System.Drawing.Point(173, 111);
+            this.bte_wyzarzanie2.Name = "bte_wyzarzanie2";
+            this.bte_wyzarzanie2.Size = new System.Drawing.Size(75, 52);
+            this.bte_wyzarzanie2.TabIndex = 8;
+            this.bte_wyzarzanie2.Text = "Symulowane\r\nWyżarzanie\r\ndla 2";
+            this.bte_wyzarzanie2.UseVisualStyleBackColor = true;
+            this.bte_wyzarzanie2.Click += new System.EventHandler(this.btn_wyzarzanie2_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(366, 170);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.bte_wyzarzanie2);
             this.Controls.Add(this.btn_wyrzarzanie);
             this.Controls.Add(this.btn_iteracyjna);
             this.Controls.Add(this.btn_wyswietl);
@@ -172,7 +172,7 @@
         private System.Windows.Forms.Button btn_wyswietl;
         private System.Windows.Forms.Button btn_iteracyjna;
         private System.Windows.Forms.Button btn_wyrzarzanie;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button bte_wyzarzanie2;
     }
 }
 

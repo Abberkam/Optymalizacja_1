@@ -72,6 +72,7 @@ namespace Opt_1
                 trasa[i] = Int32.Parse(data[i]);
                 trasa[i + 1] = 0;
             }
+            trasa.CopyTo(trasaNajkrotsza,0);
         }
 
         public string wyswietlTrase(int[] route)
@@ -182,6 +183,8 @@ namespace Opt_1
         public long symulowaneWyzarzanie(int[] route1, double T0, double T2, double sigma, int jakametoda)
         {
             int[] trasaTmp = new int[ileMiast + 1];
+            int[] tnaj = new int[ileMiast + 1];
+            route1.CopyTo(tnaj, 0);
             rand = new Random();
             double x;
             double p;
@@ -208,9 +211,16 @@ namespace Opt_1
 
                 delta = dlugoscTrasy(route1) - dlugoscTrasy(trasaTmp);
 
-                if (delta < 0)
+                if (dlugoscTrasy(tnaj) > dlugoscTrasy(trasaTmp))
                 {
-                    route1.CopyTo(trasaNajkrotsza, 0);
+                    trasaTmp.CopyTo(tnaj, 0);
+                    if (dlugoscTrasy(tnaj) < dlugoscTrasy(trasaNajkrotsza))
+                        tnaj.CopyTo(trasaNajkrotsza, 0);
+                }
+
+                if (delta > 0)
+                {
+                    trasaTmp.CopyTo(route1, 0);
                 }
                 else
                 {
@@ -218,17 +228,11 @@ namespace Opt_1
                     p = Math.Exp(-delta / T0);
                     if (x < p)
                     {
-                        route1.CopyTo(trasaNajkrotsza, 0);
-                    }
-                    else
-                    {
-                        trasaTmp.CopyTo(trasaNajkrotsza, 0);
                         trasaTmp.CopyTo(route1, 0);
                     }
                 }
                 T0 = T0 / (1 + sigma * T0);
             }
-            trasaNajkrotsza.CopyTo(trasaBiezaca,0);
             return dlugoscTrasy(trasaNajkrotsza);
         }
 
@@ -258,7 +262,7 @@ namespace Opt_1
             suma[1] = 0;
             int flaga = 0;
 
-            for (int i = 0; i < ileMiast; i++)
+            for (int i = 0; i < ileMiast+1; i++)
             {
                 if (flaga == 0)
                     suma[0] += dane[route0[i]][route0[i + 1]];
@@ -271,32 +275,45 @@ namespace Opt_1
             return suma;
         }
 
+        public long[] sprawdzDlugosci(long[] dlug)
+        {
+            long tmp;
+            if (dlug[0] < dlug[1])
+            {
+                tmp = dlug[0];
+                dlug[0] = dlug[1];
+                dlug[1] = tmp;
+            }
+            return dlug;
+        }
+
         public long[] symulowaneWyzarzanie2(int[] route1, double T0, double T2, double sigma)
         {
             int[] trasaTmp = new int[ileMiast + 2];
+            int[] tnaj = new int[ileMiast + 2];
+            route1.CopyTo(tnaj, 0);
             rand = new Random();
             double x;
             double p;
             long delta;
-            long[] dlugosci0 = new long[2];
-            long[] dlugosci1 = new long[2];
+            long[] dNowe = new long[2];
+            long[] dStare = new long[2];
+            long[] sprawdzenie1 = new long[2];
+            long[] sprawdzenie2 = new long[2];
 
             while (T0 > T2)
             {
                 route1.CopyTo(trasaTmp, 0);
                 ins2(trasaTmp);
 
-                dlugosci0 = dlugoscTrasy2(trasaTmp);
-                dlugosci1 = dlugoscTrasy2(route1);
+                dNowe = sprawdzDlugosci(dlugoscTrasy2(trasaTmp));
+                dStare = sprawdzDlugosci(dlugoscTrasy2(route1));
 
-                if (dlugosci0[0] > dlugosci0[1])
-                    delta = dlugosci1[0] - dlugosci0[0];
-                else
-                    delta = dlugosci1[1] - dlugosci0[1];
+                delta = dStare[0] - dNowe[0];
 
-                if (delta < 0)
+                if (delta > 0)
                 {
-                    route1.CopyTo(trasaDlaDwochNajkrotsza, 0);
+                    trasaTmp.CopyTo(route1, 0);
                 }
                 else
                 {
@@ -304,17 +321,25 @@ namespace Opt_1
                     p = Math.Exp(-delta / T0);
                     if (x < p)
                     {
-                        route1.CopyTo(trasaDlaDwochNajkrotsza, 0);
-                    }
-                    else
-                    {
-                        trasaTmp.CopyTo(trasaDlaDwochNajkrotsza, 0);
                         trasaTmp.CopyTo(route1, 0);
                     }
                 }
+
+                dStare = sprawdzDlugosci(dlugoscTrasy2(tnaj));
+
+                if(dNowe[0]<dStare[0])
+                {
+                    route1.CopyTo(tnaj, 0);
+                    dNowe = sprawdzDlugosci(dlugoscTrasy2(tnaj));
+                    dStare = sprawdzDlugosci(dlugoscTrasy2(trasaDlaDwochNajkrotsza));
+                    if (dNowe[0] < dStare[0])
+                    {
+                        tnaj.CopyTo(trasaDlaDwochNajkrotsza, 0);
+                    }
+                }
+
                 T0 = T0 / (1 + sigma * T0);
             }
-            trasaDlaDwochNajkrotsza.CopyTo(trasaDlaDwochBiezaca, 0);
             return dlugoscTrasy2(trasaDlaDwochNajkrotsza);
         }
 
@@ -326,8 +351,8 @@ namespace Opt_1
             double p;
             long delta = 0;
             long deltamax = 0;
-            long[] dlugosci0 = new long[2];
-            long[] dlugosci1 = new long[2];
+            long[] dNowe = new long[2];
+            long[] dStare = new long[2];
             double T0;
             trasaDlaDwoch.CopyTo(trasaDlaDwochBiezaca, 0);
 
@@ -336,13 +361,13 @@ namespace Opt_1
                 trasaDlaDwochBiezaca.CopyTo(trasaTmp, 0);
                 //ins2();
 
-                dlugosci0 = dlugoscTrasy2(trasaTmp);
-                dlugosci1 = dlugoscTrasy2(trasaDlaDwochBiezaca);
+                dNowe = dlugoscTrasy2(trasaTmp);
+                dStare = dlugoscTrasy2(trasaDlaDwochBiezaca);
 
-                if (dlugosci0[0] > dlugosci0[1])
-                    delta = dlugosci1[0] - dlugosci0[0];
+                if (dNowe[0] > dNowe[1])
+                    delta = dStare[0] - dNowe[0];
                 else
-                    delta = dlugosci1[1] - dlugosci0[1];
+                    delta = dStare[1] - dNowe[1];
 
                 if (Math.Abs(delta) > Math.Abs(deltamax))
                     deltamax = delta;
@@ -357,13 +382,13 @@ namespace Opt_1
                     trasaDlaDwochBiezaca.CopyTo(trasaTmp, 0);
                     //ins2();
 
-                    dlugosci0 = dlugoscTrasy2(trasaTmp);
-                    dlugosci1 = dlugoscTrasy2(trasaDlaDwochBiezaca);
+                    dNowe = dlugoscTrasy2(trasaTmp);
+                    dStare = dlugoscTrasy2(trasaDlaDwochBiezaca);
 
-                    if (dlugosci0[0] > dlugosci0[1])
-                        delta = dlugosci1[0] - dlugosci0[0];
+                    if (dNowe[0] > dNowe[1])
+                        delta = dStare[0] - dNowe[0];
                     else
-                        delta = dlugosci1[1] - dlugosci0[1];
+                        delta = dStare[1] - dNowe[1];
 
 
                     if (delta < 0)

@@ -65,9 +65,9 @@ namespace Opt_1
                     textBox_dlugosc1.Text = tmp2.ToString();
                 }
             }
-            textBox_biezaca.Text = komi.wyswietlTrase(komi.trasaDlaDwochBiezaca);
-            textBox_dlugosc1.Text = komi.dlugoscTrasy2(komi.trasaDlaDwochBiezaca)[0].ToString();
-            textBox_dlugosc12.Text = komi.dlugoscTrasy2(komi.trasaDlaDwochBiezaca)[1].ToString();
+            textBox_biezaca.Text = komi.wyswietlTrase(komi.trasaDlaDwochNajkrotsza);
+            textBox_dlugosc1.Text = komi.dlugoscTrasy2(komi.trasaDlaDwochNajkrotsza)[0].ToString();
+            textBox_dlugosc12.Text = komi.dlugoscTrasy2(komi.trasaDlaDwochNajkrotsza)[1].ToString();
             btn_policz.Enabled = true;
             btn_reset.Enabled = true;
         }
@@ -88,6 +88,7 @@ namespace Opt_1
             textBox_temperaturaKoncowa.Text = temperaturaKoncowa.ToString();
             textBox_sigma.Text = sigma.ToString();
             textBox_proby.Text = proby.ToString();
+            komi.trasaDlaDwoch.CopyTo(komi.trasaDlaDwochNajkrotsza, 0);
         }
 
         private void textBox_sigma_KeyDown(object sender, KeyEventArgs e)

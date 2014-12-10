@@ -58,6 +58,7 @@ namespace Opt_1
             textBox_biezaca.Text = komi.wyswietlTrase(komi.trasaBiezaca);
             textBox_dlugosc0.Text = komi.dlugoscTrasy(komi.trasa).ToString();
             textBox_dlugosc1.Text = komi.dlugoscTrasy(komi.trasaBiezaca).ToString();
+            komi.trasa.CopyTo(komi.trasaNajkrotsza, 0);
         }
     }
 }
